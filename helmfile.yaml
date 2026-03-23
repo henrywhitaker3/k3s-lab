@@ -1,0 +1,45 @@
+repositories:
+  - name: postfinance
+    url: https://postfinance.github.io/kubelet-csr-approver
+  - name: cilium
+    url: https://helm.cilium.io
+  - name: coredns
+    url: https://coredns.github.io/helm
+
+helmDefaults:
+  wait: true
+  waitForJobs: false
+  timeout: 600
+  force: true
+
+releases:
+  - name: prometheus-operator-crds
+    namespace: monitoring
+    chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
+    version: 28.0.0
+
+  - name: kubelet-csr-approver
+    namespace: kube-system
+    chart: postfinance/kubelet-csr-approver
+    version: 1.2.13
+    values: ["./app/kube-system/kubelet-csr-approver/values.yaml"]
+    needs:
+      - kube-system/cilium
+      - kube-system/coredns
+
+  - name: coredns
+    namespace: kube-system
+    chart: coredns/coredns
+    version: "1.45.2"
+    values: ["./app/kube-system/coredns/values.yaml"]
+    needs:
+      - kube-system/cilium
+      - monitoring/prometheus-operator-crds
+
+  - name: cilium
+    namespace: kube-system
+    chart: cilium/cilium
+    version: 1.19.1
+    values: ["./app/kube-system/cilium/values.yaml"]
+    needs:
+      - monitoring/prometheus-operator-crds

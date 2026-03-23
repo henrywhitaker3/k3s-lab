@@ -1,0 +1,25 @@
+version: 3
+
+tasks:
+  createCluster:
+    desc: Create the k3d cluster
+    internal: true
+    silent: true
+    cmds:
+      - |
+        if k3d cluster list | grep -q "lab"; then
+          echo "Cluster already exists"
+        else
+          k3d cluster create --config cluster.yaml
+        fi
+
+  apps:
+    desc: Install Apps
+    cmds:
+      - helmfile apply --file helmfile.yaml --skip-diff-on-install --suppress-diff
+
+  up:
+    desc: Create the cluster and apply charts
+    cmds:
+      - task: createCluster
+      - task: apps

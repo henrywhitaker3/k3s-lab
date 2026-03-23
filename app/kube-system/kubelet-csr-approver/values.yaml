@@ -1,0 +1,4 @@
+---
+providerRegex: (k3d-lab-server-[0-9]+)
+bypassDnsResolution: true
+bypassHostnameCheck: true
