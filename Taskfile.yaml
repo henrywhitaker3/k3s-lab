@@ -16,7 +16,7 @@ tasks:
   apps:
     desc: Install Apps
     cmds:
-      - helmfile apply --file helmfile.yaml --skip-diff-on-install --suppress-diff
+      - helmfile sync --file helmfile.yaml
 
   up:
     desc: Create the cluster and apply charts
