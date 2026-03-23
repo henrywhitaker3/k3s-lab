@@ -23,3 +23,9 @@ tasks:
     cmds:
       - task: createCluster
       - task: apps
+
+  down:
+    desc: Delete the cluster
+    prompt: Are you sure?
+    cmds:
+      - k3d cluster delete lab
