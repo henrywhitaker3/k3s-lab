@@ -7,7 +7,7 @@ repositories:
     url: https://coredns.github.io/helm
 
 helmDefaults:
-  wait: true
+  wait: false
   waitForJobs: false
   timeout: 600
   force: true
@@ -40,6 +40,7 @@ releases:
     namespace: kube-system
     chart: cilium/cilium
     version: 1.19.1
+    wait: false
     values: ["./app/kube-system/cilium/values.yaml"]
     needs:
       - monitoring/prometheus-operator-crds
